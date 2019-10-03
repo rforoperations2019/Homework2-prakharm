@@ -1,0 +1,32 @@
+---
+title: "Homework2"
+author: "Prakhar Mishra"
+date: "October 2, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+require(rgdal)
+require(leaflet)
+require(leaflet.extras)
+
+require(dplyr)
+require(readxl)
+require(stringr)
+
+```
+
+#India's population by city, based on the largest urban areas by population
+
+Requirements- One map with a layer of points (circles or markers)
+
+```{r}
+
+dataIndia <- read.csv("C:/Users/prakh/Desktop/Semester III/R Shiny/Homework 2/india.csv")
+
+leaflet(data=dataIndia) %>%
+  addProviderTiles("OpenStreetMap.HOT") %>%
+  addCircleMarkers(lng = ~lng, lat = ~lat, radius = ~sqrt(sqrt(population)),clusterOptions =                    markerClusterOptions())
+```
+
