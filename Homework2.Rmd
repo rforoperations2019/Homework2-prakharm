@@ -18,12 +18,11 @@ require(stringr)
 ```
 
 
-
 ```{r}
 nyc_facilities <- readOGR("C:/Users/prakh/Documents/GitHub/Homework2-prakharm/Facilities Database - Shapefile.geojson")
 ```
 
-#Using polygons to map NYC's sidewalk features
+#Using lines to map NYC's bicycle routes features
 ```{r}
 bike_routes <- readOGR("C:/Users/prakh/Documents/GitHub/Homework2-prakharm/Bicycle Routes.geojson")
 
@@ -32,5 +31,17 @@ plot(bike_routes)
 leaflet() %>%
   addTiles() %>%
   addPolylines(data = bike_routes)
+```
+
+#Using polygons to plot NYC's school zones for the 2019-2020 School Year
+
+```{r}
+school_zones <- readOGR("C:/Users/prakh/Documents/GitHub/Homework2-prakharm/2019-2020 School Zones (Middle School).geojson")
+
+plot(school_zones)
+
+leaflet() %>%
+  addTiles() %>%
+  addPolygons(data = school_zones)
 ```
 
