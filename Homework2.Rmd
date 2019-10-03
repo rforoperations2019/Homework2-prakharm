@@ -17,16 +17,20 @@ require(stringr)
 
 ```
 
-#India's population by city, based on the largest urban areas by population
 
-Requirements- One map with a layer of points (circles or markers)
 
 ```{r}
+nyc_facilities <- readOGR("C:/Users/prakh/Documents/GitHub/Homework2-prakharm/Facilities Database - Shapefile.geojson")
+```
 
-dataIndia <- read.csv("C:/Users/prakh/Desktop/Semester III/R Shiny/Homework 2/india.csv")
+#Using polygons to map NYC's sidewalk features
+```{r}
+bike_routes <- readOGR("C:/Users/prakh/Documents/GitHub/Homework2-prakharm/Bicycle Routes.geojson")
 
-leaflet(data=dataIndia) %>%
-  addProviderTiles("OpenStreetMap.HOT") %>%
-  addCircleMarkers(lng = ~lng, lat = ~lat, radius = ~sqrt(sqrt(population)),clusterOptions =                    markerClusterOptions())
+plot(bike_routes)
+
+leaflet() %>%
+  addTiles() %>%
+  addPolylines(data = bike_routes)
 ```
 
