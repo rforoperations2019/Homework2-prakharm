@@ -10,7 +10,6 @@ output: html_document
 require(rgdal)
 require(leaflet)
 require(leaflet.extras)
-
 require(dplyr)
 require(readxl)
 require(stringr)
@@ -18,34 +17,45 @@ require(stringr)
 ```
 
 
-```{r}
-nyc_facilities <- readOGR("C:/Users/prakh/Documents/GitHub/Homework2-prakharm/Facilities Database - Shapefile.geojson")
-```
+##Using Lines To Map NYC's Bicycle Routes
 
-#Using lines to map NYC's bicycle routes features
+Cycling in New York City is associated with mixed cycling conditions that include dense urban proximities, relatively flat terrain, congested roadways with "stop-and-go" traffic, and streets with heavy pedestrian activity. The city's large cycling population includes utility cyclists, such as delivery and messenger services; cycling clubs for recreational cyclists; and increasingly commuters.Cycling is increasingly popular in New York City; in 2017 there were approximately 450,000 daily bike trips, compared with 170,000 daily bike trips in 2005.
 ```{r}
 bike_routes <- readOGR("C:/Users/prakh/Documents/GitHub/Homework2-prakharm/Bicycle Routes.geojson")
 
 plot(bike_routes)
 
 leaflet() %>%
-  addTiles() %>%
+  addProviderTiles("OpenStreetMap.HOT") %>%
   addPolylines(data = bike_routes)
 ```
 
-#Using polygons to plot NYC's school zones for the 2019-2020 School Year
+##Using Polygons To Plot NYC's School Zones 
+###2019-2020 School Year
 
+Middle schools serve children in grades 6-8. Every fall, all fifth graders enrolled in a New York City public elementary school receive customized middle school applications. The application has all the middle schools where each student is eligible to apply. Students complete the application by ranking the schools in order of preference and return the application to their current school. Applications must be submitted in or before December and decision letters are available in the late spring.
+
+Children living beyond walking distance from their school may qualify to receive free MetroCard for transportation.
 ```{r}
 school_zones <- readOGR("C:/Users/prakh/Documents/GitHub/Homework2-prakharm/2019-2020 School Zones (Middle School).geojson")
 
 plot(school_zones)
 
 leaflet() %>%
-  addTiles() %>%
+  addProviderTiles("OpenStreetMap.HOT") %>%
   addPolygons(data = school_zones)
 ```
 
+##Parking Meters in NYC
 
+Summary & Quick Facts:
+
+  + Parking meters are also known as Muni-Meters in NYC.
+  + Parking rates for meters vary across the five boroughs.
+  + Meters dispense receipts that must be displayed on the dashboard of your parked car.
+  + Legal parking durations on each meter vary from 1 hour to 12 hours.
+  + Parking meters do not have to be paid on Sundays.
+  + Always check signs carefully before parking at a meter.
 ```{r}
 parking_meter <-read.csv("C:/Users/prakh/Documents/GitHub/Homework2-prakharm/dot_MUNIMETER_20191001.csv")
 
@@ -61,13 +71,14 @@ leaflet() %>%
 
 ```
 
+The ubiquitous Muni-meters we see today are actually quite new. The Department of Transportation in the early 2010s replaced the last remaining single-space coin activated parking meters.  The reason? The newer Muni-meters have several advantages over the old school parking meters your Uncle Tony remembers. They include a convenient digital pay-and-display system, the reduction of unnecessary sidewalk encumbrances, and additional capacity for parked cars in the same curb space.
 
 ```{r}
 outline <- parking_meter[chull(parking_meter$LONG,parking_meter$LAT),]
 
 multi_layer_map <- leaflet(parking_meter) %>%
        # Base groups
-      addTiles(group = "OSM") %>%
+      addTiles(group = "OSM (default)") %>%
       addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
       addProviderTiles(providers$Stamen.Watercolor, group = "Watercolor") %>%
       addProviderTiles(providers$Stamen.Terrain, group = "Terrain") %>%
@@ -78,7 +89,7 @@ multi_layer_map <- leaflet(parking_meter) %>%
       fill = F, weight = 2, color = "#0c17eb", group = "City Outline") %>%
       # Layers control
       addLayersControl(
-     baseGroups = c("MtbMAP", "Toner", "Topography","Terrain"),
+     baseGroups = c("OSM (default)", "Toner", "Watercolor","Terrain"),
      overlayGroups = c("Parking Meters", "City Outline"),
      options = layersControlOptions(collapsed = FALSE)
   )
