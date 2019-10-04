@@ -45,3 +45,19 @@ leaflet() %>%
   addPolygons(data = school_zones)
 ```
 
+
+```{r}
+parking_meter <-read.csv("C:/Users/prakh/Documents/GitHub/Homework2-prakharm/dot_MUNIMETER_20191001.csv")
+
+#designing a custom palette
+pallete <- colorFactor(c("#98271a", "#3a981a","#271a98","#98901a","#981a98"), c("Inactive", "Active","Retired","Planned","Removed"))
+
+#plotting the map
+leaflet() %>%
+  addProviderTiles("OpenStreetMap.HOT") %>%
+  addCircleMarkers(data = parking_meter, lng = ~LONG, lat = ~LAT, radius = 1.5, color = ~pallete(Status)) %>%
+  addLegend(position = "topright" , pal = pallete, values = parking_meter$Status, title = "Status")
+
+
+```
+
